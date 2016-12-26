@@ -9,6 +9,20 @@
     <script type="text/javascript">
         var ENTER_KEY = 13;
 
+        function onLoad() {
+            var historyA = document.getElementById("historyA");
+            var historyB = document.getElementById("historyB");
+
+            var messageA = document.getElementById("messageA");
+            var messageB = document.getElementById("messageB");
+
+            var sendMessageA = document.getElementById("sendMessageA");
+            var sendMessageB = document.getElementById("sendMessageB");
+
+            registerEnterKeyPressToButtonClick(messageA, sendMessageA);
+            registerEnterKeyPressToButtonClick(messageB, sendMessageB);
+        }
+
         function addMessageFromUser(textBox, user) {
             var newMessage = {
                 user: user,
@@ -36,18 +50,12 @@
             });
         }
 
-        function onLoad() {
-            var historyA = document.getElementById("historyA");
-            var historyB = document.getElementById("historyB");
+        function buildOwnMessage(message) {
+            return '<p class="ownMessage">' + message + '</p>';
+        }
 
-            var messageA = document.getElementById("messageA");
-            var messageB = document.getElementById("messageB");
-
-            var sendMessageA = document.getElementById("sendMessageA");
-            var sendMessageB = document.getElementById("sendMessageB");
-
-            registerEnterKeyPressToButtonClick(messageA, sendMessageA);
-            registerEnterKeyPressToButtonClick(messageB, sendMessageB);
+        function buildOtherMessage(message) {
+            return '<p class="otherMessage">' + message + '</p>';
         }
 
         window.onload = onLoad;
