@@ -5,6 +5,53 @@
     <meta charset="UTF-8">
     <link type="text/css" rel="stylesheet" href="style.css" />
     <title>Dummy chat</title>
+
+    <script type="text/javascript">
+        var ENTER_KEY = 13;
+
+        function addMessageFromUser(textBox, user) {
+            var newMessage = {
+                user: user,
+                message: textBox.value
+            };
+
+            var htmlMessage = "<em>" + newMessage.user + ": </em> " + newMessage.message + "<br />";
+            historyA.innerHTML += htmlMessage;
+            historyB.innerHTML += htmlMessage;
+
+            historyA.scrollTop = historyA.scrollHeight;
+            historyB.scrollTop = historyB.scrollHeight;
+
+            textBox.value = "";
+        }
+
+        function registerEnterKeyPressToButtonClick(input, button) {
+            input.addEventListener("keyup", function(event) {
+                event.preventDefault();
+                if (input.value) {
+                    if (event.keyCode == ENTER_KEY) {
+                        button.click();
+                    }
+                }
+            });
+        }
+
+        function onLoad() {
+            var historyA = document.getElementById("historyA");
+            var historyB = document.getElementById("historyB");
+
+            var messageA = document.getElementById("messageA");
+            var messageB = document.getElementById("messageB");
+
+            var sendMessageA = document.getElementById("sendMessageA");
+            var sendMessageB = document.getElementById("sendMessageB");
+
+            registerEnterKeyPressToButtonClick(messageA, sendMessageA);
+            registerEnterKeyPressToButtonClick(messageB, sendMessageB);
+        }
+
+        window.onload = onLoad;
+    </script>
 </head>
 
 <body>
@@ -14,16 +61,14 @@
                 <h1>Chat A</h1>
             </header>
 
-            <textarea readonly class="history">
-            </textarea>
+            <p id="historyA" readonly class="history">
+            </p>
 
             <section class="message">
-                <form>
-                    <div class="send">
-                        <input type="text" />
-                        <button>Send</button>
-                    </div>
-                </form>
+                <div class="send">
+                    <input id="messageA" type="text" />
+                    <button id="sendMessageA" onclick="addMessageFromUser(messageA, 'A')">Send</button>
+                </div>
             </section>
         </div>
 
@@ -32,16 +77,14 @@
                 <h1>Chat B</h1>
             </header>
 
-            <textarea readonly class="history">
-            </textarea>
+            <p id="historyB" readonly class="history">
+            </p>
 
             <section class="message">
-                <form>
-                    <div class="send">
-                        <input type="text" />
-                        <button>Send</button>
-                    </div>
-                </form>
+                <div class="send">
+                    <input id="messageB" type="text" />
+                    <button id="sendMessageB" onclick="addMessageFromUser(messageB, 'B')">Send</button>
+                </div>
             </section>
         </div>
     </div>
