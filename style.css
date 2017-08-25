@@ -22,3 +22,25 @@
     margin-top: 10px;
     width: 100%;
 }
+
+.ownMessage {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 12px;
+    padding: 5px;
+    width: 90px;
+    background: lightblue;
+    position: relative;
+    right: 5px;
+}
+
+.otherMessage {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 12px;
+    padding: 5px;
+    width: 90px;
+    background: lightgreen;
+    position: relative;
+    left: 5px;
+}

@@ -8,33 +8,49 @@
 
     <script type="text/javascript">
         var ENTER_KEY = 13;
+        var historyBoxByUser = {}
 
         function onLoad() {
-            var historyA = document.getElementById("historyA");
-            var historyB = document.getElementById("historyB");
+            let historyA = document.getElementById("historyA");
+            let historyB = document.getElementById("historyB");
 
-            var messageA = document.getElementById("messageA");
-            var messageB = document.getElementById("messageB");
+            historyBoxByUser = {
+                "A": historyA,
+                "B": historyB,
+            };
 
-            var sendMessageA = document.getElementById("sendMessageA");
-            var sendMessageB = document.getElementById("sendMessageB");
+            let messageA = document.getElementById("messageA");
+            let messageB = document.getElementById("messageB");
+
+            let sendMessageA = document.getElementById("sendMessageA");
+            let sendMessageB = document.getElementById("sendMessageB");
 
             registerEnterKeyPressToButtonClick(messageA, sendMessageA);
             registerEnterKeyPressToButtonClick(messageB, sendMessageB);
         }
 
         function addMessageFromUser(textBox, user) {
-            var newMessage = {
+            if (!textBox.value)
+            {
+                return;
+            }
+
+            let newMessage = {
                 user: user,
                 message: textBox.value
             };
 
-            var htmlMessage = "<em>" + newMessage.user + ": </em> " + newMessage.message + "<br />";
-            historyA.innerHTML += htmlMessage;
-            historyB.innerHTML += htmlMessage;
-
-            historyA.scrollTop = historyA.scrollHeight;
-            historyB.scrollTop = historyB.scrollHeight;
+            for (let userInMapping in historyBoxByUser)
+            {
+                let htmlMessageBox =
+                    userInMapping === user
+                    ? buildOwnMessageBox(newMessage)
+                    : buildOtherMessageBox(newMessage);
+                
+                let history = historyBoxByUser[userInMapping];
+                history.innerHTML += htmlMessageBox;                
+                history.scrollTop = history.scrollHeight;
+            }
 
             textBox.value = "";
         }
@@ -50,12 +66,16 @@
             });
         }
 
-        function buildOwnMessage(message) {
-            return '<p class="ownMessage">' + message + '</p>';
+        function buildOwnMessageBox(message) {
+            return '<p class="ownMessage">' + buildMessage(message) + '</p>';            
         }
 
-        function buildOtherMessage(message) {
-            return '<p class="otherMessage">' + message + '</p>';
+        function buildOtherMessageBox(message) {
+            return '<p class="otherMessage">' + buildMessage(message) + '</p>';
+        }
+
+        function buildMessage(newMessage) {
+            return "<em>" + newMessage.user + ": </em> " + newMessage.message + "<br />";
         }
 
         window.onload = onLoad;
