@@ -37,7 +37,7 @@
 
             let newMessage = {
                 user: user,
-                message: textBox.value
+                content: textBox.value
             };
 
             for (let userInMapping in historyBoxByUser)
@@ -67,15 +67,15 @@
         }
 
         function buildOwnMessageBox(message) {
-            return '<p class="ownMessage">' + buildMessage(message) + '</p>';            
+            return '<li class="ownMessageBox">' + buildMessage(message) + '</li>';
         }
 
         function buildOtherMessageBox(message) {
-            return '<p class="otherMessage">' + buildMessage(message) + '</p>';
+            return '<li class="otherMessageBox">' + buildMessage(message) + '</li>';
         }
 
-        function buildMessage(newMessage) {
-            return "<em>" + newMessage.user + ": </em> " + newMessage.message + "<br />";
+        function buildMessage(message) {
+            return "<p>" + message.content + "</p>";
         }
 
         window.onload = onLoad;
@@ -89,10 +89,9 @@
                 <h1>Chat A</h1>
             </header>
 
-            <p id="historyA" readonly class="history">
-            </p>
+            <ol id="historyA" class="history"></ol>
 
-            <section class="message">
+            <section class="messageEdition">
                 <div class="send">
                     <input id="messageA" type="text" />
                     <button id="sendMessageA" onclick="addMessageFromUser(messageA, 'A')">Send</button>
@@ -105,10 +104,9 @@
                 <h1>Chat B</h1>
             </header>
 
-            <p id="historyB" readonly class="history">
-            </p>
+            <ol id="historyB" class="history"></ol>
 
-            <section class="message">
+            <section class="messageEdition">
                 <div class="send">
                     <input id="messageB" type="text" />
                     <button id="sendMessageB" onclick="addMessageFromUser(messageB, 'B')">Send</button>
