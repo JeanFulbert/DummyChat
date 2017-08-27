@@ -19,30 +19,31 @@
     list-style: none;
 }
 
-.ownMessageBox, .otherMessageBox {
-    border-radius: 5px;
-    padding: 0px 5px 0px 5px;
-    width: 90px;
-    margin-bottom: 7px;
+.history li {
+    clear: both;
+    height: auto;    
 }
 
-.ownMessageBox {
+.history li span {
+    border-radius: 5px;
+    padding: 0px 5px 0px 5px;
+    max-width: 160px;
+    margin-bottom: 7px;
+    position: relative;
+    display: inline-block;
+}
+
+.history li span.right {
     background: #DCF8C7;
-    margin-left: auto;
-    margin-right: 0px;
+    float: right;
     
     box-shadow: 1px 1px 0px #D4D4D4;
 }
 
-.ownMessageBox p {
-    margin: 0px;
-}
-
-.otherMessageBox {
+.history li span.left {
     background: #F7F7F7;
-    margin-left: 0px;
-    margin-right: auto;
-
+    float: left;
+    
     box-shadow: -1px 1px 0px #D4D4D4;
 }
 

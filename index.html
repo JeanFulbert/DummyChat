@@ -42,13 +42,13 @@
 
             for (let userInMapping in historyBoxByUser)
             {
-                let htmlMessageBox =
+                let messageBlock =
                     userInMapping === user
-                    ? buildOwnMessageBox(newMessage)
-                    : buildOtherMessageBox(newMessage);
+                    ? buildSelfMessage(newMessage)
+                    : buildOtherMessage(newMessage);
                 
                 let history = historyBoxByUser[userInMapping];
-                history.innerHTML += htmlMessageBox;                
+                history.innerHTML += '<li>' + messageBlock + '</li>';                
                 history.scrollTop = history.scrollHeight;
             }
 
@@ -65,17 +65,13 @@
                 }
             });
         }
-
-        function buildOwnMessageBox(message) {
-            return '<li class="ownMessageBox">' + buildMessage(message) + '</li>';
+        
+        function buildSelfMessage(message) {
+            return '<span class="right">' + message.content + '</span>';
         }
 
-        function buildOtherMessageBox(message) {
-            return '<li class="otherMessageBox">' + buildMessage(message) + '</li>';
-        }
-
-        function buildMessage(message) {
-            return "<p>" + message.content + "</p>";
+        function buildOtherMessage(message) {
+            return '<span class="left">' + message.content + '</span>';
         }
 
         window.onload = onLoad;
