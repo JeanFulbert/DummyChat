@@ -1,115 +1,117 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="style.css" />
-    <title>Dummy chat</title>
+    <head>
+        <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" href="style.css" />
+        <title>Dummy chat</title>
 
-    <script type="text/javascript">
-        var ENTER_KEY = 13;
-        var historyBoxByUser = {}
+        <script type="text/javascript">
+            var ENTER_KEY = 13;
+            var historyBoxByUser = {}
 
-        function onLoad() {
-            let historyA = document.getElementById("historyA");
-            let historyB = document.getElementById("historyB");
+            function onLoad() {
+                let historyA = document.getElementById("historyA");
+                let historyB = document.getElementById("historyB");
 
-            historyBoxByUser = {
-                "A": historyA,
-                "B": historyB,
-            };
+                historyBoxByUser = {
+                    "A": historyA,
+                    "B": historyB,
+                };
 
-            let messageA = document.getElementById("messageA");
-            let messageB = document.getElementById("messageB");
+                let messageA = document.getElementById("messageA");
+                let messageB = document.getElementById("messageB");
 
-            let sendMessageA = document.getElementById("sendMessageA");
-            let sendMessageB = document.getElementById("sendMessageB");
+                let sendMessageA = document.getElementById("sendMessageA");
+                let sendMessageB = document.getElementById("sendMessageB");
 
-            registerEnterKeyPressToButtonClick(messageA, sendMessageA);
-            registerEnterKeyPressToButtonClick(messageB, sendMessageB);
-        }
-
-        function addMessageFromUser(textBox, user) {
-            if (!textBox.value)
-            {
-                return;
+                registerEnterKeyPressToButtonClick(messageA, sendMessageA);
+                registerEnterKeyPressToButtonClick(messageB, sendMessageB);
             }
 
-            let newMessage = {
-                user: user,
-                content: textBox.value
-            };
-
-            for (let userInMapping in historyBoxByUser)
-            {
-                let messageBlock =
-                    userInMapping === user
-                    ? buildSelfMessage(newMessage)
-                    : buildOtherMessage(newMessage);
-                
-                let history = historyBoxByUser[userInMapping];
-                history.innerHTML += '<li>' + messageBlock + '</li>';                
-                history.scrollTop = history.scrollHeight;
-            }
-
-            textBox.value = "";
-        }
-
-        function registerEnterKeyPressToButtonClick(input, button) {
-            input.addEventListener("keyup", function(event) {
-                event.preventDefault();
-                if (input.value) {
-                    if (event.keyCode == ENTER_KEY) {
-                        button.click();
-                    }
+            function addMessageFromUser(textarea, user) {
+                if (!textarea.value)
+                {
+                    return;
                 }
-            });
-        }
-        
-        function buildSelfMessage(message) {
-            return '<span class="right">' + message.content + '</span>';
-        }
 
-        function buildOtherMessage(message) {
-            return '<span class="left">' + message.content + '</span>';
-        }
+                let newMessage = {
+                    user: user,
+                    content:
+                        textarea.value
+                            .replace(/\n/g, '<br />')
+                };
 
-        window.onload = onLoad;
-    </script>
-</head>
+                for (let userInMapping in historyBoxByUser)
+                {
+                    let messageBlock =
+                        userInMapping === user
+                        ? buildSelfMessage(newMessage)
+                        : buildOtherMessage(newMessage);
+                    
+                    let history = historyBoxByUser[userInMapping];
+                    history.innerHTML += '<li>' + messageBlock + '</li>';                
+                    history.scrollTop = history.scrollHeight;
+                }
 
-<body>
-    <div class="main">
-        <div class="chat">
-            <header>
-                <h1>Chat A</h1>
-            </header>
+                textarea.value = "";
+            }
 
-            <ol id="historyA" class="history"></ol>
+            function registerEnterKeyPressToButtonClick(input, button) {
+                input.addEventListener("keydown", function(e) {
+                    if (input.value) {
+                        if (e.keyCode === ENTER_KEY && !e.shiftKey) {
+                            e.preventDefault();
+                            button.click();
+                        }
+                    }
+                });
+            }
+            
+            function buildSelfMessage(message) {
+                return '<span class="right">' + message.content + '</span>';
+            }
 
-            <section class="messageEdition">
-                <div class="send">
-                    <input id="messageA" type="text" />
-                    <button id="sendMessageA" onclick="addMessageFromUser(messageA, 'A')">Send</button>
-                </div>
-            </section>
+            function buildOtherMessage(message) {
+                return '<span class="left">' + message.content + '</span>';
+            }
+
+            window.onload = onLoad;
+        </script>
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="chat">
+                <header>
+                    <h1>Chat A</h1>
+                </header>
+
+                <ol id="historyA" class="history"></ol>
+
+                <section class="messageEdition">
+                    <div class="send">
+                        <textarea id="messageA"></textarea>
+                        <button id="sendMessageA" onclick="addMessageFromUser(messageA, 'A')">Send</button>
+                    </div>
+                </section>
+            </div>
+
+            <div class="chat">
+                <header>
+                    <h1>Chat B</h1>
+                </header>
+
+                <ol id="historyB" class="history"></ol>
+
+                <section class="messageEdition">
+                    <div class="send">
+                        <textarea id="messageB"></textarea>
+                        <button id="sendMessageB" onclick="addMessageFromUser(messageB, 'B')">Send</button>
+                    </div>
+                </section>
+            </div>
         </div>
-
-        <div class="chat">
-            <header>
-                <h1>Chat B</h1>
-            </header>
-
-            <ol id="historyB" class="history"></ol>
-
-            <section class="messageEdition">
-                <div class="send">
-                    <input id="messageB" type="text" />
-                    <button id="sendMessageB" onclick="addMessageFromUser(messageB, 'B')">Send</button>
-                </div>
-            </section>
-        </div>
-    </div>
-</body>
+    </body>
 
 </html>

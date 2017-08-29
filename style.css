@@ -19,6 +19,7 @@
     list-style: none;
 }
 
+/* Message boxes */
 .history li {
     clear: both;
     height: auto;    
@@ -51,7 +52,29 @@
     margin: 0px;
 }
 
+/* Footer */
 .messageEdition {
     margin-top: 10px;
     width: 100%;
 }
+
+textarea {
+    resize: none;
+}
+
+button {
+    border-radius: 50%;
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    height: 48px;
+    width: 48px;
+}
+
+/* button:hover {
+    box-shadow: 0px 0px 10px
+} */
