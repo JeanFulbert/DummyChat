@@ -8,28 +8,44 @@
 
         <script type="text/javascript">
             var ENTER_KEY = 13;
-            var historyBoxByUser = {}
+            var componentsByUser = {}
 
             function onLoad() {
-                let historyA = document.getElementById("historyA");
-                let historyB = document.getElementById("historyB");
-
-                historyBoxByUser = {
-                    "A": historyA,
-                    "B": historyB,
+                componentsByUser = {
+                    "A": {
+                        history: document.getElementById("historyA"),
+                        textarea: document.getElementById("messageA")
+                    },
+                    "B": {
+                        history: document.getElementById("historyB"),
+                        textarea: document.getElementById("messageB")
+                    }
                 };
 
-                let messageA = document.getElementById("messageA");
-                let messageB = document.getElementById("messageB");
-
-                let sendMessageA = document.getElementById("sendMessageA");
-                let sendMessageB = document.getElementById("sendMessageB");
-
-                registerEnterKeyPressToButtonClick(messageA, sendMessageA);
-                registerEnterKeyPressToButtonClick(messageB, sendMessageB);
+                for (let userInMapping in componentsByUser)
+                {
+                    registerEnterKeyDown(userInMapping);
+                }
             }
 
-            function addMessageFromUser(textarea, user) {
+            function registerEnterKeyDown(user) {
+                let textarea = componentsByUser[user].textarea;
+
+                textarea.addEventListener("keydown", function(e) {
+                    if (e.keyCode === ENTER_KEY && !e.shiftKey)
+                    {
+                        e.preventDefault();
+
+                        if (textarea.value)
+                        {
+                            addMessageFromUser(user);
+                        }
+                    }
+                });
+            }
+
+            function addMessageFromUser(user) {
+                let textarea = componentsByUser[user].textarea;
                 if (!textarea.value)
                 {
                     return;
@@ -42,30 +58,19 @@
                             .replace(/\n/g, '<br />')
                 };
 
-                for (let userInMapping in historyBoxByUser)
+                for (let userInMapping in componentsByUser)
                 {
                     let messageBlock =
                         userInMapping === user
                         ? buildSelfMessage(newMessage)
                         : buildOtherMessage(newMessage);
                     
-                    let history = historyBoxByUser[userInMapping];
+                    let history = componentsByUser[userInMapping].history;
                     history.innerHTML += '<li>' + messageBlock + '</li>';                
                     history.scrollTop = history.scrollHeight;
                 }
 
                 textarea.value = "";
-            }
-
-            function registerEnterKeyPressToButtonClick(input, button) {
-                input.addEventListener("keydown", function(e) {
-                    if (input.value) {
-                        if (e.keyCode === ENTER_KEY && !e.shiftKey) {
-                            e.preventDefault();
-                            button.click();
-                        }
-                    }
-                });
             }
             
             function buildSelfMessage(message) {
@@ -88,13 +93,8 @@
                 </header>
 
                 <ol id="historyA" class="history"></ol>
-
-                <section class="messageEdition">
-                    <div class="send">
-                        <textarea id="messageA"></textarea>
-                        <button id="sendMessageA" onclick="addMessageFromUser(messageA, 'A')">Send</button>
-                    </div>
-                </section>
+                
+                <textarea id="messageA"></textarea>
             </div>
 
             <div class="chat">
@@ -104,12 +104,7 @@
 
                 <ol id="historyB" class="history"></ol>
 
-                <section class="messageEdition">
-                    <div class="send">
-                        <textarea id="messageB"></textarea>
-                        <button id="sendMessageB" onclick="addMessageFromUser(messageB, 'B')">Send</button>
-                    </div>
-                </section>
+                <textarea id="messageB"></textarea>
             </div>
         </div>
     </body>
