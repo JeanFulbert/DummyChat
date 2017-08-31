@@ -3,106 +3,31 @@
 
     <head>
         <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css" />
         <link type="text/css" rel="stylesheet" href="style.css" />
         <title>Dummy chat</title>
-
-        <script type="text/javascript">
-            var ENTER_KEY = 13;
-            var componentsByUser = {}
-
-            function onLoad() {
-                componentsByUser = {
-                    "A": {
-                        history: document.getElementById("historyA"),
-                        textarea: document.getElementById("messageA")
-                    },
-                    "B": {
-                        history: document.getElementById("historyB"),
-                        textarea: document.getElementById("messageB")
-                    }
-                };
-
-                for (let userInMapping in componentsByUser)
-                {
-                    registerEnterKeyDown(userInMapping);
-                }
-            }
-
-            function registerEnterKeyDown(user) {
-                let textarea = componentsByUser[user].textarea;
-
-                textarea.addEventListener("keydown", function(e) {
-                    if (e.keyCode === ENTER_KEY && !e.shiftKey)
-                    {
-                        e.preventDefault();
-
-                        if (textarea.value)
-                        {
-                            addMessageFromUser(user);
-                        }
-                    }
-                });
-            }
-
-            function addMessageFromUser(user) {
-                let textarea = componentsByUser[user].textarea;
-                if (!textarea.value)
-                {
-                    return;
-                }
-
-                let newMessage = {
-                    user: user,
-                    content:
-                        textarea.value
-                            .replace(/\n/g, '<br />')
-                };
-
-                for (let userInMapping in componentsByUser)
-                {
-                    let messageBlock =
-                        userInMapping === user
-                        ? buildSelfMessage(newMessage)
-                        : buildOtherMessage(newMessage);
-                    
-                    let history = componentsByUser[userInMapping].history;
-                    history.innerHTML += '<li>' + messageBlock + '</li>';                
-                    history.scrollTop = history.scrollHeight;
-                }
-
-                textarea.value = "";
-            }
-            
-            function buildSelfMessage(message) {
-                return '<span class="right">' + message.content + '</span>';
-            }
-
-            function buildOtherMessage(message) {
-                return '<span class="left">' + message.content + '</span>';
-            }
-
-            window.onload = onLoad;
-        </script>
     </head>
 
     <body>
         <div class="main">
-            <div class="chat">
-                <header>Chat A</header>
+            <section class="chat">
+                <!-- <h2>Chat A</h2> -->
 
                 <ol id="historyA" class="history"></ol>
                 
                 <textarea id="messageA"></textarea>
-            </div>
+            </section>
 
-            <div class="chat">
-                <header>Chat B</header>
+            <section class="chat">
+                <!-- <h2>Chat B</h2> -->
 
                 <ol id="historyB" class="history"></ol>
 
                 <textarea id="messageB"></textarea>
-            </div>
+            </section>
         </div>
+        
+        <script type="text/javascript" src="script.js"></script>
     </body>
 
 </html>
