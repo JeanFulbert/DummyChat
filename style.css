@@ -6,10 +6,8 @@
     position: absolute;
     left: 10%;
     right: 10%;
-    width: 80%;
     top: 10%;
     bottom: 10%;
-    height: 80%;
 }
 
 .chat {
@@ -32,13 +30,12 @@
 /* Message boxes */
 .history li {
     clear: both;
-    height: auto;    
 }
 
 .history li span {
     border-radius: 5px;
     padding: 0px 5px 0px 5px;
-    max-width: 160px;
+    max-width: 90%;
     margin-bottom: 7px;
     position: relative;
     display: inline-block;
