@@ -15,18 +15,18 @@
 .chat {
     flex-grow: 1;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 .history {
     margin: 0px;
     overflow-x:hidden;
     overflow-y:auto;
-    background: #E8DFD6;
     padding: 5px;
     list-style: none;
-    
-    height: 85%;
-    /* box-sizing: border-box; */
+    background: #E8DFD6;
+    flex: 1;
 }
 
 /* Message boxes */
