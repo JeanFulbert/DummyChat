@@ -2,7 +2,7 @@
 var ENTER_KEY = 13;
 var componentsByUser = {}
 
-function onLoad() {
+document.addEventListener("DOMContentLoaded", function() {
     componentsByUser = {
         "A": {
             history: document.getElementById("historyA"),
@@ -17,8 +17,8 @@ function onLoad() {
     for (let userInMapping in componentsByUser)
     {
         registerEnterKeyDown(userInMapping);
-    }
-}
+    }    
+});
 
 function registerEnterKeyDown(user) {
     let textarea = componentsByUser[user].textarea;
@@ -47,6 +47,10 @@ function addMessageFromUser(user) {
         user: user,
         content:
             textarea.value
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
                 .replace(/\n/g, '<br />')
     };
 
@@ -73,4 +77,12 @@ function buildOtherMessage(message) {
     return '<span class="left">' + message.content + '</span>';
 }
 
-window.onload = onLoad;
+function encodeString(str) {
+    return
+        String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/\n/g, '<br />');
+}
