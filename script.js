@@ -45,13 +45,8 @@ function addMessageFromUser(user) {
 
     let newMessage = {
         user: user,
-        content:
-            textarea.value
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/\n/g, '<br />')
+        content: encodeString(textarea.value)
+            
     };
 
     for (let userInMapping in componentsByUser)
@@ -78,8 +73,7 @@ function buildOtherMessage(message) {
 }
 
 function encodeString(str) {
-    return
-        String(str)
+    return String(str)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
