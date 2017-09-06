@@ -10,6 +10,10 @@
     bottom: 10%;
 }
 
+h2 {
+    margin: 0px;
+}
+
 .chat {
     flex-grow: 1;
     padding: 10px;
@@ -55,7 +59,17 @@
     box-shadow: -1px 1px 0px #D4D4D4;
 }
 
-/* Footer */
+/* Sending block */
+.sendingBlock {
+    display: flex;
+    margin-top: 5px;
+}
+
+button {
+    height: 35px;
+    margin-left: 5px;
+}
+
 textarea {
     border-style: none;
     resize: none;

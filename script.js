@@ -1,62 +1,81 @@
 
 var ENTER_KEY = 13;
-var componentsByUser = {}
+var componentsByUser = {};
+var users = [ "A", "B" ];
 
 document.addEventListener("DOMContentLoaded", function() {
-    componentsByUser = {
-        "A": {
-            history: document.getElementById("historyA"),
-            textarea: document.getElementById("messageA")
-        },
-        "B": {
-            history: document.getElementById("historyB"),
-            textarea: document.getElementById("messageB")
-        }
-    };
 
-    for (let userInMapping in componentsByUser)
-    {
-        registerEnterKeyDown(userInMapping);
-    }    
+    users.forEach(function(userId) {
+        componentsByUser[userId] = createEntryForUser(userId);
+        
+        registerEnterKeyDown(userId);
+        registerSendClicked(userId);
+    });
 });
 
-function registerEnterKeyDown(user) {
-    let textarea = componentsByUser[user].textarea;
+
+function createEntryForUser(userId) {
+    return {
+        history: document.getElementById("history" + userId),
+        textarea: document.getElementById("message" + userId),
+        sendButton: document.getElementById("sendButton" + userId)
+    };
+}
+
+function registerEnterKeyDown(userId) {
+    let textarea = componentsByUser[userId].textarea;
 
     textarea.addEventListener("keydown", function(e) {
         if (e.keyCode === ENTER_KEY && !e.shiftKey)
         {
             e.preventDefault();
 
-            if (textarea.value)
+            if (canSendMessageFromUser(userId))
             {
-                addMessageFromUser(user);
+                sendMessageFromUser(userId);
             }
         }
     });
 }
 
-function addMessageFromUser(user) {
-    let textarea = componentsByUser[user].textarea;
-    if (!textarea.value)
+function registerSendClicked(userId) {
+    let button = componentsByUser[userId].sendButton;
+
+    button.onclick = function() {
+        if (canSendMessageFromUser(userId))
+        {
+            sendMessageFromUser(userId);
+        }
+    };
+}
+
+function canSendMessageFromUser(userId) {    
+    let textarea = componentsByUser[userId].textarea;
+    
+    return textarea.value.length > 0;
+}
+
+function sendMessageFromUser(userId) {
+    if (!canSendMessageFromUser(userId))
     {
         return;
     }
 
+    let textarea = componentsByUser[userId].textarea;
+    
     let newMessage = {
-        user: user,
-        content: encodeString(textarea.value)
-            
+        user: userId,
+        content: encodeString(textarea.value)            
     };
 
-    for (let userInMapping in componentsByUser)
+    for (let userIdInMapping in componentsByUser)
     {
         let messageBlock =
-            userInMapping === user
+            userIdInMapping === userId
             ? buildSelfMessage(newMessage)
             : buildOtherMessage(newMessage);
         
-        let history = componentsByUser[userInMapping].history;
+        let history = componentsByUser[userIdInMapping].history;
         history.innerHTML += '<li>' + messageBlock + '</li>';                
         history.scrollTop = history.scrollHeight;
     }
